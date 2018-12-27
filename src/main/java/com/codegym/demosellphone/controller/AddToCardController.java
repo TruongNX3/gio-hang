@@ -2,13 +2,16 @@ package com.codegym.demosellphone.controller;
 
 import com.codegym.demosellphone.model.Item;
 import com.codegym.demosellphone.model.Order;
+import com.codegym.demosellphone.model.OrderDetails;
 import com.codegym.demosellphone.model.Product;
+import com.codegym.demosellphone.service.OrderDetailsService;
 import com.codegym.demosellphone.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,6 +26,10 @@ import java.util.Optional;
 public class AddToCardController {
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private OrderDetailsService orderDetailsService;
+
 
     @GetMapping("/")
     public ModelAndView home() {
@@ -79,6 +86,14 @@ public class AddToCardController {
 
     @GetMapping("/card")
     public ModelAndView card() {
+        ModelAndView modelAndView = new ModelAndView("card");
+        modelAndView.addObject("orderDetails", new OrderDetails());
+        return modelAndView;
+    }
+
+    @PostMapping("/saveOrder")
+    public ModelAndView saveOrder(@ModelAttribute("orderDetails") OrderDetails orderDetails) {
+        orderDetailsService.save(orderDetails);
         ModelAndView modelAndView = new ModelAndView("card");
         return modelAndView;
     }

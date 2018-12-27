@@ -6,27 +6,30 @@
 </head>
 <body>
 <h3>Cart Page</h3>
+<form method="post" th:object="${orderDetails}" th:action="@{/saveOrder}">
 <table border="1">
     <tr>
         <th>Id</th>
         <th>Name</th>
-        <th>Photo</th>
         <th>Price</th>
         <th>Quantity</th>
         <th>Sub Total</th>
     </tr>
    <!--<p th:text="${session.order.items}" th:unless="${session == null}"> . </p>-->
-    <th:block th:each="item: ${session.order.items}" th:unless="${session == null}">
+    <th:block th:each="item: ${session.order.items}" th:unless="${session == null}" >
         <tr>
-            <td th:text="${item.product.id}"></td>
-            <td th:text="${item.product.name}"></td>
-            <td th:text="${item.product.image}"></td>
-            <td th:text="${item.product.price}"></td>
-            <td th:text="${item.quantity}"></td>
-            <td th:text="${item.product.price}"></td>
+            <td th:text="${item.product.id}"><input type="hidden" th:field="*{id}" th:text="${item.product.id}"></td>
+            <td th:text="${item.product.name}"><input type="hidden" th:field="*{name}"  th:text="${item.product.name}"></td>
+            <td th:text="${item.product.price}"><input type="hidden" th:field="*{price}"  th:text="${item.product.price}"></td>
+            <td th:text="${item.quantity}" th:value="${item.quantity}">
+                <input type="hidden" th:field="*{quantity}" th:text="${item.quantity}">
+            </td>
+            <td th:text="${item.product.price*item.quantity}"><input type="hidden" th:field="*{sum}" th:text="${item.product.price*item.quantity}"></td>
         </tr>
     </th:block>
 </table>
+    <input type="submit" value="Save">
+</form>
 <br>
 <a>Continue Shopping</a>
 </body>
